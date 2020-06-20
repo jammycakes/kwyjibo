@@ -1,4 +1,7 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using Kwyjibo.Impl;
 
 namespace Kwyjibo
 {
@@ -11,34 +14,22 @@ namespace Kwyjibo
             _options = options;
         }
 
-        public ISession CreateSession(IInputSource inputSource)
-        {
-            throw new NotImplementedException();
-        }
+        public ISession CreateSession(IEnumerable<IInputSource> inputSources)
+            => new Session(inputSources.ToArray());
 
         public ISession CreateSession(params object[] data)
-        {
-            throw new NotImplementedException();
-        }
+            => new Session(new IInputSource[] {new InputSource(data)});
 
-        public IKwyjibo Build(string context, IInputSource inputSource)
-        {
-            return new Impl.Kwyjibo(CreateSession(inputSource), context);
-        }
+        public IKwyjibo Build(string context, IEnumerable<IInputSource> inputSources)
+            => new Impl.Kwyjibo(CreateSession(inputSources), context);
 
         public IKwyjibo Build(string context, params object[] data)
-        {
-            return new Impl.Kwyjibo(CreateSession(data), context);
-        }
+            => new Impl.Kwyjibo(CreateSession(data), context);
 
-        public IKwyjibo<TContext> Build<TContext>(IInputSource inputSource)
-        {
-            return new Impl.Kwyjibo<TContext>(CreateSession(inputSource));
-        }
+        public IKwyjibo<TContext> Build<TContext>(IEnumerable<IInputSource> inputSources)
+            => new Kwyjibo<TContext>(CreateSession(inputSources));
 
         public IKwyjibo<TContext> Build<TContext>(params object[] data)
-        {
-            return new Impl.Kwyjibo<TContext>(CreateSession(data));
-        }
+            => new Kwyjibo<TContext>(CreateSession(data));
     }
 }

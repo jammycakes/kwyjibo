@@ -19,7 +19,6 @@ namespace Kwyjibo.Extensions.DependencyInjection
                 services.GetService<KwyjiboBuilder>()
                     .CreateSession(services.GetService<IInputSource>()));
             services.AddScoped(typeof(IKwyjibo<>), typeof(Kwyjibo<>));
-            var serviceTypes = options.GetInputs();
             services.AddScoped<IInputSource, ServiceProviderInputSource>();
 
             return services;
