@@ -1,13 +1,22 @@
 using System;
+using System.Collections.Generic;
 using Kwyjibo.Fluent;
+using Kwyjibo.Impl;
 
 namespace Kwyjibo
 {
     public class KwyjiboOptions
     {
-        public IAddClause Add<TContext>(string name)
+        public IList<Definition> Definitions { get; } = new List<Definition>();
+
+        public IAddClause Add(string context, string name = "")
         {
-            throw new NotImplementedException();
+            var definition = new Definition(context, name);
+            Definitions.Add(definition);
+            return definition;
         }
+
+        public IAddClause Add<TContext>(string name = "")
+            => Add(typeof(TContext).FullName, name);
     }
 }

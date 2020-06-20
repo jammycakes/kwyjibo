@@ -1,21 +1,22 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Kwyjibo.Impl
 {
     public class InputSource : IInputSource
     {
-        private readonly object[] _data;
+        private readonly IList<object> _data;
 
-        public InputSource(object[] data)
+        public InputSource(IList<object> data)
         {
             _data = data;
         }
 
-        public IEnumerable GetData(Type serviceType)
+        public IEnumerable<object> GetData(Type inputType)
         {
-            return _data.Where(d => serviceType.IsInstanceOfType(d));
+            return _data.Where(d => inputType.IsInstanceOfType(d));
         }
     }
 }

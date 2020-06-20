@@ -15,10 +15,10 @@ namespace Kwyjibo
         }
 
         public ISession CreateSession(IEnumerable<IInputSource> inputSources)
-            => new Session(inputSources.ToArray());
+            => new Session(inputSources.ToList(), _options.Definitions);
 
         public ISession CreateSession(params object[] data)
-            => new Session(new IInputSource[] {new InputSource(data)});
+            => new Session(new IInputSource[] {new InputSource(data)}, _options.Definitions);
 
         public IKwyjibo Build(string context, IEnumerable<IInputSource> inputSources)
             => new Impl.Kwyjibo(CreateSession(inputSources), context);

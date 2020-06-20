@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Kwyjibo.Extensions.DependencyInjection
@@ -13,9 +14,9 @@ namespace Kwyjibo.Extensions.DependencyInjection
             _serviceProvider = serviceProvider;
         }
 
-        public IEnumerable GetData(Type serviceType)
+        public IEnumerable<object> GetData(Type inputType)
         {
-            return _serviceProvider.GetServices(serviceType);
+            return _serviceProvider.GetServices(inputType);
         }
     }
 }

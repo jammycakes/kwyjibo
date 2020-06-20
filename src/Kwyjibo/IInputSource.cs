@@ -1,10 +1,11 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace Kwyjibo
 {
     public interface IInputSource
     {
-        IEnumerable GetData(Type serviceType);
+        IEnumerable<object> GetData(Type inputType);
     }
 }

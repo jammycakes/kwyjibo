@@ -11,11 +11,6 @@ namespace Kwyjibo.Impl
             _context = context;
         }
 
-        public void Assert()
-        {
-            _session.Assert(_context, string.Empty);
-        }
-
         public void Assert(string condition)
         {
             _session.Assert(_context, condition);
