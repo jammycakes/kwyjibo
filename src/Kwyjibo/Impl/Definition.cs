@@ -3,7 +3,7 @@ using Kwyjibo.Fluent;
 
 namespace Kwyjibo.Impl
 {
-    public class Definition : IAddClause, IWhenClause
+    public class Definition : IForContextClause, IWhenClause
     {
         public string Context { get; }
 

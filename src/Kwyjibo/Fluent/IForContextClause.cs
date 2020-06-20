@@ -2,7 +2,7 @@ using System;
 
 namespace Kwyjibo.Fluent
 {
-    public interface IAddClause
+    public interface IForContextClause
     {
         IWhenClause When<TService>(Predicate<TService> predicate);
     }

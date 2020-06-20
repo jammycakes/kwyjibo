@@ -2,6 +2,7 @@ using System;
 using System.Security.Principal;
 using Kwyjibo.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
+using Moq;
 using NUnit.Framework;
 
 namespace Kwyjibo.Tests.DependencyInjection
@@ -14,16 +15,27 @@ namespace Kwyjibo.Tests.DependencyInjection
         [OneTimeSetUp]
         public void Arrange()
         {
+            var identity = new Mock<IIdentity>();
+            identity.SetupGet(i => i.Name).Returns("kwyjibo");
+
             var services = new ServiceCollection();
             services
                 .AddScoped<KwyjiboedService>()
+                .AddSingleton(identity.Object)
                 .AddKwyjibo(cfg => {
-                    cfg.Add<KwyjiboedService>("test")
+                    cfg.ForContext<KwyjiboedService>(nameof(KwyjiboedService.Execute))
                         .When<IIdentity>(identity => identity.Name.Contains("kwyjibo"))
                         .Throw<InvalidOperationException>();
                     cfg.AddInput<IIdentity>();
                 });
             _serviceProvider = services.BuildServiceProvider();
+        }
+
+        [Test]
+        public void KwyjiboCreatedByDependencyInjectionShouldThrow()
+        {
+            var service = _serviceProvider.GetService<KwyjiboedService>();
+            Assert.Throws<InvalidOperationException>(() => service.Execute());
         }
     }
 }

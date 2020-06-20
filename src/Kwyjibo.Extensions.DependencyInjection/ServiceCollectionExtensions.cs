@@ -15,9 +15,9 @@ namespace Kwyjibo.Extensions.DependencyInjection
             var kwyjiboBuilder = new KwyjiboBuilder(options);
 
             services.AddSingleton(kwyjiboBuilder);
-            services.AddScoped(services =>
-                services.GetService<KwyjiboBuilder>()
-                    .CreateSession(services.GetService<IInputSource>()));
+            services.AddScoped(provider =>
+                provider.GetService<KwyjiboBuilder>()
+                    .CreateSession(provider.GetServices<IInputSource>()));
             services.AddScoped(typeof(IKwyjibo<>), typeof(Kwyjibo<>));
             services.AddScoped<IInputSource, ServiceProviderInputSource>();
 
