@@ -1,9 +1,8 @@
 using System;
-using System.Linq;
 using Kwyjibo.Impl;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Kwyjibo.Extensions.DependencyInjection
+namespace Kwyjibo
 {
     public static class ServiceCollectionExtensions
     {

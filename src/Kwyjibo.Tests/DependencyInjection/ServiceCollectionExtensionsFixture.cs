@@ -1,6 +1,5 @@
 using System;
 using System.Security.Principal;
-using Kwyjibo.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using NUnit.Framework;

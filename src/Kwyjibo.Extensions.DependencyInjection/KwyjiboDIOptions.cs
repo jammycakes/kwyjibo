@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
 
-namespace Kwyjibo.Extensions.DependencyInjection
+namespace Kwyjibo
 {
     public class KwyjiboDIOptions : KwyjiboOptions
     {
         private IList<Type> _inputs = new List<Type>();
 
-        public KwyjiboOptions AddInput<TService>() where TService : class
+        public KwyjiboDIOptions AddInput<TService>() where TService : class
         {
             _inputs.Add(typeof(TService));
             return this;

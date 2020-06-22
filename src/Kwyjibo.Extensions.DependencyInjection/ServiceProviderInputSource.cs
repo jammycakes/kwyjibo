@@ -1,9 +1,8 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Kwyjibo.Extensions.DependencyInjection
+namespace Kwyjibo
 {
     public class ServiceProviderInputSource : IInputSource
     {
