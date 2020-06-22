@@ -1,6 +1,32 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kwyjibo", "Kwyjibo\Kwyjibo.csproj", "{90FD472A-9072-4E10-B668-0D19146043F2}"
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30011.22
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kwyjibo", "Kwyjibo\Kwyjibo.csproj", "{90FD472A-9072-4E10-B668-0D19146043F2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kwyjibo.Tests", "Kwyjibo.Tests\Kwyjibo.Tests.csproj", "{2C205BFA-C22E-46FC-8E3C-714447D485BF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kwyjibo.Extensions.DependencyInjection", "Kwyjibo.Extensions.DependencyInjection\Kwyjibo.Extensions.DependencyInjection.csproj", "{257A889E-804B-4737-8146-132C653CB1EF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".root", ".root", "{3AA66B93-6D41-4792-95FE-0C1AA6C16D92}"
+	ProjectSection(SolutionItems) = preProject
+		..\.editorconfig = ..\.editorconfig
+		..\.gitattributes = ..\.gitattributes
+		..\.gitignore = ..\.gitignore
+		..\README.md = ..\README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{4E383AFA-3143-4DB4-AA31-0C333D2A3279}"
+	ProjectSection(SolutionItems) = preProject
+		..\appveyor.yml = ..\appveyor.yml
+		..\build.py = ..\build.py
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D5ECCDFF-6E6F-40EF-92B0-32B0E7A8C8D5}"
+	ProjectSection(SolutionItems) = preProject
+		.version\version.cs = .version\version.cs
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -12,5 +38,19 @@ Global
 		{90FD472A-9072-4E10-B668-0D19146043F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{90FD472A-9072-4E10-B668-0D19146043F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{90FD472A-9072-4E10-B668-0D19146043F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C205BFA-C22E-46FC-8E3C-714447D485BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C205BFA-C22E-46FC-8E3C-714447D485BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C205BFA-C22E-46FC-8E3C-714447D485BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C205BFA-C22E-46FC-8E3C-714447D485BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{257A889E-804B-4737-8146-132C653CB1EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{257A889E-804B-4737-8146-132C653CB1EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{257A889E-804B-4737-8146-132C653CB1EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{257A889E-804B-4737-8146-132C653CB1EF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {16E2D3DB-2419-446F-AEFA-F7B7F2FCF87B}
 	EndGlobalSection
 EndGlobal
