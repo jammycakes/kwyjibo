@@ -12,7 +12,7 @@ projects = [
 ]
 
 version = '0.1.0'
-suffix = 'beta'
+suffix = ''
 is_release = False
 
 
