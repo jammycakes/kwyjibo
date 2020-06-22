@@ -1,8 +1,31 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
-        <LangVersion>8</LangVersion>
-    </PropertyGroup>
+  <PropertyGroup>
+    <PackageId>Kwyjibo</PackageId>
+    <Description>An error condition simulation framework</Description>
+    <Authors>James McKay</Authors>
+    <Copyright>Copyright 2020 James McKay</Copyright>
+
+    <PackageProjectUrl>https://github.com/jammycakes/kwyjibo</PackageProjectUrl>
+    <PackageTags>Exceptions,Errors,ErrorHandling</PackageTags>
+    <PackageLicense>MIT</PackageLicense>
+
+    <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
+    <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
+    <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
+    <AssemblyName>Kwyjibo</AssemblyName>
+    <RootNamespace>Kwyjibo</RootNamespace>
+
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+
+    <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
+    <LangVersion>8</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\.version\version.cs" Link="version.cs" />
+  </ItemGroup>
 
 </Project>

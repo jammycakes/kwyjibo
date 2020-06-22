@@ -1,16 +1,44 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <LangVersion>8</LangVersion>
-        <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
-    </PropertyGroup>
+  <PropertyGroup>
+    <PackageId>Kwyjibo.Extensions.DependencyInjection</PackageId>
+    <Description>An error condition simulation framework</Description>
+    <Authors>James McKay</Authors>
+    <Copyright>Copyright 2020 James McKay</Copyright>
 
-    <ItemGroup>
-      <ProjectReference Include="..\Kwyjibo\Kwyjibo.csproj" />
-    </ItemGroup>
+    <PackageProjectUrl>https://github.com/jammycakes/kwyjibo</PackageProjectUrl>
+    <PackageTags>Exceptions,Errors,ErrorHandling</PackageTags>
+    <PackageLicense>MIT</PackageLicense>
 
-    <ItemGroup>
-      <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.5" />
-    </ItemGroup>
+    <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
+    <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
+    <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
+    <AssemblyName>Kwyjibo.Extensions.DependencyInjection</AssemblyName>
+    <RootNamespace>Kwyjibo</RootNamespace>
+
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+
+    <LangVersion>8</LangVersion>
+    <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
+    <RootNamespace>Kwyjibo</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Kwyjibo\Kwyjibo.csproj" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="[2.0.0, 4.0.0)" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.1' ">
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="[3.0.0, 4.0.0)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\.version\version.cs" Link="version.cs" />
+  </ItemGroup>
 
 </Project>
