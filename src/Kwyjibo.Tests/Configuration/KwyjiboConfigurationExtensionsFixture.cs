@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations;
 using Kwyjibo.Extensions.Configuration;
 using Microsoft.Extensions.Configuration;
 using NUnit.Framework;
