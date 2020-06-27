@@ -2,18 +2,19 @@ namespace Kwyjibo.Impl
 {
     public class Kwyjibo : IKwyjibo
     {
-        private readonly ISession _session;
-        private readonly IContext _context;
+        public ISession Session { get; }
+
+        public IContext Context { get; }
 
         public Kwyjibo(ISession session, string context)
         {
-            _session = session;
-            _context = session.GetContext(context);
+            Session = session;
+            Context = session.GetContext(context);
         }
 
         public void Assert(string condition)
         {
-            _context?.Handle(condition, _session);
+            Context?.Handle(condition, Session);
         }
     }
 
