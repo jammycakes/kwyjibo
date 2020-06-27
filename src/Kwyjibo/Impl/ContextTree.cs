@@ -43,6 +43,7 @@ namespace Kwyjibo.Impl
             foreach (var definition in options.Definitions) {
                 var context = EnsureContext(definition.Context);
                 context.Status = definition.Status;
+                context.ConfigureHandler(definition);
             }
         }
 

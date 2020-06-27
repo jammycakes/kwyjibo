@@ -4,8 +4,8 @@ namespace Kwyjibo.Impl
 {
     public class Context : IContext
     {
-        private IDictionary<string, IHandler> _handlers
-            = new Dictionary<string, IHandler>();
+        private IDictionary<string, Handler> _handlers
+            = new Dictionary<string, Handler>();
 
         public string FullName { get; }
 
@@ -20,6 +20,17 @@ namespace Kwyjibo.Impl
             Status == Status.Enabled ||
             Status == Status.Inherit && (Parent?.Enabled ?? false);
 
+        internal void ConfigureHandler(Definition definition)
+        {
+            var name = definition.Name;
+            if (!_handlers.TryGetValue(name, out var handler)) {
+                handler = new Handler(this, name);
+                _handlers.Add(name, handler);
+            }
+
+            handler.Configure(definition);
+        }
+
         public IHandler GetHandler(string name)
         {
             return _handlers.TryGetValue(name, out var handler)
@@ -29,7 +40,7 @@ namespace Kwyjibo.Impl
 
         public void Handle(string handlerName, IList<IInputSource> sources)
         {
-            throw new System.NotImplementedException();
+            GetHandler(handlerName)?.Handle(sources);
         }
 
         public Context(IContext parent, string fullName, string name)

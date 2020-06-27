@@ -9,19 +9,23 @@ namespace Kwyjibo.Impl
 
         public string Name { get; }
 
-        public Type InputType { get; }
+        public Type InputType { get; private set; }
 
-        public Predicate<object> Predicate { get; }
+        public Predicate<object> Predicate { get; private set; }
 
-        public Func<Exception> ExceptionBuilder { get; }
+        public Func<Exception> ExceptionBuilder { get; private set; }
 
-        public Handler(IContext context, Definition definition)
+        public Handler(IContext context, string name)
         {
             Context = context;
-            Name = definition.Name;
-            InputType = definition.InputType;
-            Predicate = definition.Predicate;
-            ExceptionBuilder = definition.ExceptionBuilder;
+            Name = name;
+        }
+
+        internal void Configure(Definition definition)
+        {
+            InputType = definition.InputType ?? InputType;
+            Predicate = definition.Predicate ?? Predicate;
+            ExceptionBuilder = definition.ExceptionBuilder ?? ExceptionBuilder;
         }
 
         public void Handle(IList<IInputSource> sources)
