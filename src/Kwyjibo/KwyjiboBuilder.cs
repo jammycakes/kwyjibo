@@ -9,9 +9,12 @@ namespace Kwyjibo
     {
         private readonly KwyjiboOptions _options;
 
+        private readonly ContextTree _contextTree;
+
         public KwyjiboBuilder(KwyjiboOptions options)
         {
             _options = options;
+            _contextTree = new ContextTree(options);
         }
 
         public ISession CreateSession(IEnumerable<IInputSource> inputSources)

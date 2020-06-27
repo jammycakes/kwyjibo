@@ -14,6 +14,8 @@ namespace Kwyjibo
 
         Status Status { get; }
 
-        void Handle(string handler, IList<IInputSource> sources);
+        IHandler GetHandler(string handlerName);
+
+        void Handle(string handlerName, IList<IInputSource> sources);
     }
 }
