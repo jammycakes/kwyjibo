@@ -15,6 +15,8 @@ namespace Kwyjibo.Impl
 
         public Func<Exception> ExceptionBuilder { get; private set; }
 
+        public Status Status { get; private set; } = Status.Inherit;
+
         public Definition(string context, string name)
         {
             Context = context;
@@ -25,6 +27,12 @@ namespace Kwyjibo.Impl
         {
             InputType = typeof(TInput);
             Predicate = svc => svc is TInput && predicate((TInput)svc);
+            return this;
+        }
+
+        public IForContextClause SetStatus(Status status)
+        {
+            Status = status;
             return this;
         }
 
