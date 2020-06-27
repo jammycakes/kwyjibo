@@ -2,6 +2,7 @@ using System;
 using System.Security.Principal;
 using FluentAssertions;
 using Kwyjibo.Impl;
+using Moq;
 using NUnit.Framework;
 
 namespace Kwyjibo.Tests.Kwyjibo
@@ -66,6 +67,28 @@ namespace Kwyjibo.Tests.Kwyjibo
             var tree = new ContextTree(options);
             var context = tree.GetContext<KwyjiboFixture>();
             context.Should().BeNull();
+        }
+
+        [Test]
+        public void ContextShouldHaveHandler()
+        {
+            var options = new KwyjiboOptions();
+            options.ForContext<ContextFixture>()
+                .Enabled()
+                .Named("foobar")
+                .When<IIdentity>(id => id.Name.Contains("kwyjibo"))
+                .Throw<InvalidOperationException>();
+
+            var tree = new ContextTree(options);
+            var context = tree.GetContext<ContextFixture>();
+            var handler = context.GetHandler("foobar");
+            handler.Should().NotBeNull();
+            handler.InputType.Should().Be(typeof(IIdentity));
+
+            var mockIdentity = new Mock<IIdentity>();
+            mockIdentity.SetupGet(id => id.Name).Returns("kwyjibo");
+            handler.Predicate(mockIdentity.Object).Should().BeTrue();
+            handler.ExceptionBuilder().Should().BeOfType<InvalidOperationException>();
         }
     }
 }
