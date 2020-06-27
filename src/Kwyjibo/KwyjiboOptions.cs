@@ -9,14 +9,14 @@ namespace Kwyjibo
     {
         public IList<Definition> Definitions { get; } = new List<Definition>();
 
-        public IForContextClause ForContext(string context, string name = "")
+        public IForContextClause ForContext(string context)
         {
-            var definition = new Definition(context, name);
+            var definition = new Definition(context);
             Definitions.Add(definition);
             return definition;
         }
 
-        public IForContextClause ForContext<TContext>(string name = "")
-            => ForContext(typeof(TContext).FullName, name);
+        public IForContextClause ForContext<TContext>()
+            => ForContext(typeof(TContext).FullName);
     }
 }

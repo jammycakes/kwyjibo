@@ -35,7 +35,8 @@ namespace Kwyjibo.Tests.Kwyjibo
         private IKwyjibo CreateKwyjibo<TDefinitionContext, TKwyjiboContext>(string name)
         {
             var options = new KwyjiboOptions();
-            options.ForContext<TDefinitionContext>(name)
+            options.ForContext<TDefinitionContext>()
+                .Named(name)
                 .When<IIdentity>(s => s.Name.Contains("kwyjibo"))
                 .Throw<SecurityException>();
             var mock = new Mock<IIdentity>();

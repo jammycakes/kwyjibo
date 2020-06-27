@@ -22,7 +22,8 @@ namespace Kwyjibo.Tests.DependencyInjection
                 .AddScoped<KwyjiboedService>()
                 .AddSingleton(identity.Object)
                 .AddKwyjibo(cfg => {
-                    cfg.ForContext<KwyjiboedService>(nameof(KwyjiboedService.Execute))
+                    cfg.ForContext<KwyjiboedService>()
+                        .Named(nameof(KwyjiboedService.Execute))
                         .When<IIdentity>(identity => identity.Name.Contains("kwyjibo"))
                         .Throw<InvalidOperationException>();
                     cfg.AddInput<IIdentity>();
