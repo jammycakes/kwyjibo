@@ -8,6 +8,7 @@ import subprocess
 
 projects = [
     'Kwyjibo',
+    'Kwyjibo.Extensions.Configuration',
     'Kwyjibo.Extensions.DependencyInjection'
 ]
 
