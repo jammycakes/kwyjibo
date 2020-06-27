@@ -1,7 +1,13 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+
 namespace Kwyjibo
 {
     public interface ISession
     {
-        void Assert(string context, string condition);
+        IContext GetContext(string context);
+
+        IEnumerable<IInputSource> GetSources();
     }
 }

@@ -90,5 +90,21 @@ namespace Kwyjibo.Tests.Kwyjibo
             handler.Predicate(mockIdentity.Object).Should().BeTrue();
             handler.ExceptionBuilder().Should().BeOfType<InvalidOperationException>();
         }
+
+        [Test]
+        public void ContextShouldNotHaveUndefinedHandler()
+        {
+            var options = new KwyjiboOptions();
+            options.ForContext<ContextFixture>()
+                .Enabled()
+                .Named("alien")
+                .When<IIdentity>(id => id.Name.Contains("kwyjibo"))
+                .Throw<InvalidOperationException>();
+
+            var tree = new ContextTree(options);
+            var context = tree.GetContext<ContextFixture>();
+            var handler = context.GetHandler("foobar");
+            handler.Should().BeNull();
+        }
     }
 }

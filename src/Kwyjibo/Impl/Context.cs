@@ -38,9 +38,9 @@ namespace Kwyjibo.Impl
                 : null;
         }
 
-        public void Handle(string handlerName, IList<IInputSource> sources)
+        public void Handle(string handlerName, ISession session)
         {
-            GetHandler(handlerName)?.Handle(sources);
+            GetHandler(handlerName)?.Handle(session.GetSources());
         }
 
         public Context(IContext parent, string fullName, string name)

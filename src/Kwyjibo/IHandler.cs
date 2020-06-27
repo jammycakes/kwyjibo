@@ -15,6 +15,6 @@ namespace Kwyjibo
 
         Func<Exception> ExceptionBuilder { get; }
 
-        void Handle(IList<IInputSource> sources);
+        void Handle(IEnumerable<IInputSource> sources);
     }
 }

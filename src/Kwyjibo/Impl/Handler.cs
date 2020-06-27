@@ -28,7 +28,7 @@ namespace Kwyjibo.Impl
             ExceptionBuilder = definition.ExceptionBuilder ?? ExceptionBuilder;
         }
 
-        public void Handle(IList<IInputSource> sources)
+        public void Handle(IEnumerable<IInputSource> sources)
         {
             if (InputType == null || Predicate == null || ExceptionBuilder == null) {
                 return;
