@@ -12,9 +12,9 @@ namespace Kwyjibo.Impl
             Context = session.GetContext(context);
         }
 
-        public void Assert(string condition)
+        public void Assert(string handler = "")
         {
-            Context?.Handle(condition, Session);
+            Context?.Handle(handler, Session);
         }
     }
 

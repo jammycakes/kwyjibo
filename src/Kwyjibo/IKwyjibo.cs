@@ -6,7 +6,7 @@ namespace Kwyjibo
 
         IContext Context { get; }
 
-        void Assert(string condition = "");
+        void Assert(string handler = "");
     }
 
     public interface IKwyjibo<TContext> : IKwyjibo
