@@ -1,7 +1,7 @@
 using System;
 using Microsoft.Extensions.Configuration;
 
-namespace Kwyjibo.Extensions.Configuration
+namespace Kwyjibo
 {
     public static class KwyjiboOptionsExtensions
     {

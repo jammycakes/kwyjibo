@@ -42,9 +42,15 @@ namespace Kwyjibo.Impl
 
         public void Handle(string handlerName, ISession session, object[] data)
         {
-            if (!Enabled) return;
+            if (!Enabled) {
+                return;
+            }
+
             var handler = GetHandler(handlerName);
-            if (handler == null) return;
+            if (handler == null) {
+                return;
+            }
+
             if (data != null && data.Any()) {
                 handler.Handle(new[] {new InputSource(data)});
             }

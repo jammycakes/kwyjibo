@@ -1,7 +1,6 @@
 using System.Security;
 using System.Security.Principal;
 using FluentAssertions;
-using Kwyjibo.Extensions.Configuration;
 using Kwyjibo.Impl;
 using Microsoft.Extensions.Configuration;
 using NUnit.Framework;
