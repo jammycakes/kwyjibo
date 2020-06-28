@@ -2,7 +2,7 @@
     "Kwyjibo": {
         "Default": "Disabled",
         "Contexts": {
-            "Kwyjibo": "£nabled",
+            "Kwyjibo": "Enabled",
             "Kwyjibo.Tests.Configuration": "Disabled"
         }
     }

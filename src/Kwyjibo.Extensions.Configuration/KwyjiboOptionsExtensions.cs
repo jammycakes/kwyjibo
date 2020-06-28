@@ -7,23 +7,29 @@ namespace Kwyjibo.Extensions.Configuration
     {
         public static void Configure(this KwyjiboOptions options, IConfiguration configuration)
         {
-            Status GetStatus(IConfigurationSection section)
+            Status GetStatus(string key, string value)
             {
-                if (Enum.TryParse<Status>(section.Value, true, out var status)) {
+                if (String.IsNullOrEmpty(value)) return Status.Inherit;
+
+                if (Enum.TryParse<Status>(value, true, out var status)) {
                     return status;
                 }
-                else {
-                    throw new ArgumentException(nameof(section));
-                }
+
+                var allowableValues = string.Join(", ", Enum.GetNames(typeof(Status)));
+                throw new ArgumentException(
+                    $"Kwyjibo configuration for {key} has invalid value {value}. " +
+                    $"Allowed values are: {allowableValues}.");
             }
 
             var section = configuration.GetSection("Kwyjibo");
-            var root = section.GetSection("Root");
+            var root = section.GetSection("Default");
             if (root?.Value != null) {
-                options.ForContext(string.Empty).SetStatus(GetStatus(root));
+                options.ForContext(string.Empty).SetStatus(GetStatus("(default)", root.Value));
             }
-            foreach (var key in section.GetChildren()) {
-                options.ForContext(section.Key).SetStatus(GetStatus(section));
+
+            var contexts = section.GetSection("Contexts");
+            foreach (var child in contexts.GetChildren()) {
+                options.ForContext(child.Key).SetStatus(GetStatus(child.Key, child.Value));
             }
         }
     }
