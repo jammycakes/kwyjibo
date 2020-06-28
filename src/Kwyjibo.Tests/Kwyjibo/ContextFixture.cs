@@ -15,7 +15,7 @@ namespace Kwyjibo.Tests.Kwyjibo
         {
             var options = new KwyjiboOptions();
             var tree = new ContextTree(options);
-            tree.Enabled.Should().BeFalse();
+            tree.Enabled.Should().BeTrue();
             tree.GetContext("wibble").Should().BeNull();
         }
 
@@ -24,14 +24,14 @@ namespace Kwyjibo.Tests.Kwyjibo
         {
             var options = new KwyjiboOptions();
             options.ForContext<ContextFixture>()
-                .Enabled()
+                .Disable()
                 .When<IIdentity>(id => id.Name.Contains("kwyjibo"))
                 .Throw<InvalidOperationException>();
 
             var tree = new ContextTree(options);
-            tree.Enabled.Should().BeFalse();
+            tree.Enabled.Should().BeTrue();
             var context = tree.GetContext<ContextFixture>();
-            context.Enabled.Should().BeTrue();
+            context.Enabled.Should().BeFalse();
             context.Name.Should().Be(this.GetType().Name);
             context.FullName.Should().Be(this.GetType().FullName);
         }
@@ -41,7 +41,7 @@ namespace Kwyjibo.Tests.Kwyjibo
         {
             var options = new KwyjiboOptions();
             options.ForContext<ContextFixture>()
-                .Enabled()
+                .Enable()
                 .When<IIdentity>(id => id.Name.Contains("kwyjibo"))
                 .Throw<InvalidOperationException>();
 
@@ -50,7 +50,7 @@ namespace Kwyjibo.Tests.Kwyjibo
             context.FullName.Should().Be(this.GetType().FullName);
             context.Parent.FullName.Should().Be(this.GetType().Namespace);
             context.Parent.Status.Should().Be(Status.Inherit);
-            context.Parent.Enabled.Should().BeFalse();
+            context.Parent.Enabled.Should().BeTrue();
             context.Parent.Parent.Parent.Parent.Should().Be(tree);
             context.Parent.Parent.Parent.Parent.Parent.Should().BeNull();
         }
@@ -60,7 +60,7 @@ namespace Kwyjibo.Tests.Kwyjibo
         {
             var options = new KwyjiboOptions();
             options.ForContext<ContextFixture>()
-                .Enabled()
+                .Enable()
                 .When<IIdentity>(id => id.Name.Contains("kwyjibo"))
                 .Throw<InvalidOperationException>();
 
@@ -74,7 +74,7 @@ namespace Kwyjibo.Tests.Kwyjibo
         {
             var options = new KwyjiboOptions();
             options.ForContext<ContextFixture>()
-                .Enabled()
+                .Enable()
                 .Named("foobar")
                 .When<IIdentity>(id => id.Name.Contains("kwyjibo"))
                 .Throw<InvalidOperationException>();
@@ -96,7 +96,7 @@ namespace Kwyjibo.Tests.Kwyjibo
         {
             var options = new KwyjiboOptions();
             options.ForContext<ContextFixture>()
-                .Enabled()
+                .Enable()
                 .Named("alien")
                 .When<IIdentity>(id => id.Name.Contains("kwyjibo"))
                 .Throw<InvalidOperationException>();

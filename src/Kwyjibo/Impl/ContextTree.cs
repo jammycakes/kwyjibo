@@ -6,7 +6,7 @@ namespace Kwyjibo.Impl
     public class ContextTree : Context
     {
         private readonly IDictionary<string, Context> _contexts
-            = new Dictionary<string, Context>();
+            = new Dictionary<string, Context>(StringComparer.InvariantCultureIgnoreCase);
 
         private Context EnsureContext(string contextName)
         {
@@ -21,7 +21,7 @@ namespace Kwyjibo.Impl
                 context = this;
             }
             else {
-                var ix = contextName.LastIndexOf(".", StringComparison.Ordinal);
+                var ix = contextName.LastIndexOf(".", StringComparison.InvariantCultureIgnoreCase);
                 if (ix < 0) {
                     context = new Context(this, contextName, contextName);
                 }

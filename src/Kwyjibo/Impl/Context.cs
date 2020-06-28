@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace Kwyjibo.Impl
@@ -5,7 +6,7 @@ namespace Kwyjibo.Impl
     public class Context : IContext
     {
         private IDictionary<string, Handler> _handlers
-            = new Dictionary<string, Handler>();
+            = new Dictionary<string, Handler>(StringComparer.InvariantCultureIgnoreCase);
 
         public string FullName { get; }
 
@@ -18,7 +19,7 @@ namespace Kwyjibo.Impl
 
         public bool Enabled =>
             Status == Status.Enabled ||
-            Status == Status.Inherit && (Parent?.Enabled ?? false);
+            Status == Status.Inherit && (Parent?.Enabled ?? true);
 
         internal void ConfigureHandler(Definition definition)
         {
