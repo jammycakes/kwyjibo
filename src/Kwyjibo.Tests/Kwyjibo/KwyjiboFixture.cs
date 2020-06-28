@@ -50,7 +50,7 @@ namespace Kwyjibo.Tests.Kwyjibo
         public void NamedKwyjiboShouldThrow()
         {
             var kwyjibo = CreateKwyjibo<KwyjiboFixture, KwyjiboFixture>("foobar");
-            Assert.Throws<SecurityException>(() => kwyjibo.Assert("foobar"));
+            Assert.Throws<SecurityException>(() => kwyjibo.For("foobar").Assert());
         }
 
         [Test]
@@ -64,7 +64,7 @@ namespace Kwyjibo.Tests.Kwyjibo
         public void KwyjiboThatDoesNotMatchOnContextShouldNotThrow()
         {
             var kwyjibo = CreateKwyjibo<KwyjiboFixture, object>("foobar");
-            Assert.DoesNotThrow(() => kwyjibo.Assert("foobar"));
+            Assert.DoesNotThrow(() => kwyjibo.For("foobar").Assert());
         }
 
         [Test]
@@ -80,6 +80,21 @@ namespace Kwyjibo.Tests.Kwyjibo
             var builder = new KwyjiboBuilder(options);
             var kwyjibo = builder.Build<KwyjiboFixture>(mock.Object);
             Assert.DoesNotThrow(() => kwyjibo.Assert());
+        }
+
+        [Test]
+        public void KwyjiboShouldThrowWithAdditionalData()
+        {
+            var options = new KwyjiboOptions();
+            options.ForContext<KwyjiboFixture>()
+                .When<IIdentity>(s => s.Name.Contains("kwyjibo"))
+                .Throw<SecurityException>();
+            var mock = new Mock<IIdentity>();
+            mock.SetupGet(i => i.Name).Returns("kwyjibo");
+
+            var builder = new KwyjiboBuilder(options);
+            var kwyjibo = builder.Build<KwyjiboFixture>();
+            Assert.Throws<SecurityException>(() => kwyjibo.Assert(mock.Object));
         }
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Kwyjibo.Impl
 {
@@ -39,9 +40,16 @@ namespace Kwyjibo.Impl
                 : null;
         }
 
-        public void Handle(string handlerName, ISession session)
+        public void Handle(string handlerName, ISession session, object[] data)
         {
-            GetHandler(handlerName)?.Handle(session.GetSources());
+            if (!Enabled) return;
+            var handler = GetHandler(handlerName);
+            if (handler == null) return;
+            if (data != null && data.Any()) {
+                handler.Handle(new[] {new InputSource(data)});
+            }
+
+            handler.Handle(session.GetSources());
         }
 
         public Context(IContext parent, string fullName, string name)

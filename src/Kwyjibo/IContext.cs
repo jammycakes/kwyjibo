@@ -16,6 +16,6 @@ namespace Kwyjibo
 
         IHandler GetHandler(string handlerName);
 
-        void Handle(string handlerName, ISession session);
+        void Handle(string handlerName, ISession session, object[] data);
     }
 }

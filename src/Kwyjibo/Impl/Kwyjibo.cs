@@ -6,15 +6,25 @@ namespace Kwyjibo.Impl
 
         public IContext Context { get; }
 
+        public IAssertion For(string handlerName)
+        {
+            return new Assertion(this, handlerName);
+        }
+
         public Kwyjibo(ISession session, string context)
         {
             Session = session;
             Context = session.GetContext(context);
         }
 
-        public void Assert(string handler = "")
+        internal void AssertInternal(string handlerName, object[] data)
         {
-            Context?.Handle(handler, Session);
+            Context?.Handle(handlerName, Session, data);
+        }
+
+        public void Assert(params object[] data)
+        {
+            AssertInternal(string.Empty, data);
         }
     }
 
