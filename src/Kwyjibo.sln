@@ -28,6 +28,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.version\version.cs = .version\version.cs
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kwyjibo.Extensions.Configuration", "Kwyjibo.Extensions.Configuration\Kwyjibo.Extensions.Configuration.csproj", "{9F723493-0D45-4B15-A6F5-BAD080068766}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -46,6 +48,10 @@ Global
 		{257A889E-804B-4737-8146-132C653CB1EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{257A889E-804B-4737-8146-132C653CB1EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{257A889E-804B-4737-8146-132C653CB1EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F723493-0D45-4B15-A6F5-BAD080068766}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F723493-0D45-4B15-A6F5-BAD080068766}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F723493-0D45-4B15-A6F5-BAD080068766}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F723493-0D45-4B15-A6F5-BAD080068766}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

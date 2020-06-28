@@ -3,11 +3,11 @@ using Kwyjibo.Fluent;
 
 namespace Kwyjibo.Impl
 {
-    public class Definition : IForContextClause, IWhenClause
+    public class Definition : IForContextClause
     {
         public string Context { get; }
 
-        public string Name { get; }
+        public string Name { get; private set; } = string.Empty;
 
         public Type InputType { get; private set; }
 
@@ -15,27 +15,42 @@ namespace Kwyjibo.Impl
 
         public Func<Exception> ExceptionBuilder { get; private set; }
 
-        public Definition(string context, string name)
+        public Status Status { get; private set; } = Status.Inherit;
+
+        public Definition(string context)
         {
             Context = context;
-            Name = name;
         }
 
-        public IWhenClause When<TInput>(Predicate<TInput> predicate)
+        public IForContextClause When<TInput>(Predicate<TInput> predicate)
         {
             InputType = typeof(TInput);
             Predicate = svc => svc is TInput && predicate((TInput)svc);
             return this;
         }
 
-        public void Throw<TException>() where TException : Exception, new()
+        public IForContextClause Named(string name)
         {
-            ExceptionBuilder = () => new TException();
+            this.Name = name;
+            return this;
         }
 
-        public void Throw(Func<Exception> exceptionBuilder)
+        public IForContextClause SetStatus(Status status)
+        {
+            Status = status;
+            return this;
+        }
+
+        public IForContextClause Throw<TException>() where TException : Exception, new()
+        {
+            ExceptionBuilder = () => new TException();
+            return this;
+        }
+
+        public IForContextClause Throw(Func<Exception> exceptionBuilder)
         {
             ExceptionBuilder = exceptionBuilder;
+            return this;
         }
     }
 }

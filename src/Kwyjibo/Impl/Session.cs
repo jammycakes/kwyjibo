@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.ComponentModel.Design;
 using System.Linq;
 
 namespace Kwyjibo.Impl
@@ -7,32 +6,22 @@ namespace Kwyjibo.Impl
     public class Session : ISession
     {
         private readonly IList<IInputSource> _sources;
-        private readonly IList<Definition> _definitions;
+        private readonly ContextTree _contextTree;
 
-        internal Session(IList<IInputSource> sources, IList<Definition> definitions)
+        internal Session(IList<IInputSource> sources, ContextTree contextTree)
         {
             _sources = sources;
-            _definitions = definitions;
+            _contextTree = contextTree;
         }
 
-        public void Assert(string context, string condition)
+        public IContext GetContext(string context)
         {
-            var applicableDefinitions =
-                from definition in _definitions
-                where definition.Context == context && definition.Name == condition
-                select definition;
+            return _contextTree.GetContext(context);
+        }
 
-            var exceptions =
-                from definition in applicableDefinitions
-                from source in _sources
-                from item in source.GetData(definition.InputType)
-                where definition.Predicate(item)
-                select definition.ExceptionBuilder();
-
-            var exception = exceptions.FirstOrDefault();
-            if (exception != null) {
-                throw exception;
-            }
+        public IEnumerable<IInputSource> GetSources()
+        {
+            return _sources.AsEnumerable();
         }
     }
 }

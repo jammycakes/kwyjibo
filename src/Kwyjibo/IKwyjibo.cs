@@ -1,8 +1,12 @@
 namespace Kwyjibo
 {
-    public interface IKwyjibo
+    public interface IKwyjibo : IAssertion
     {
-        void Assert(string condition = "");
+        ISession Session { get; }
+
+        IContext Context { get; }
+
+        IAssertion For(string handlerName);
     }
 
     public interface IKwyjibo<TContext> : IKwyjibo

@@ -1,0 +1,9 @@
+{
+    "Kwyjibo": {
+        "Default": "Disabled",
+        "Contexts": {
+            "Kwyjibo": "Enabled",
+            "Kwyjibo.Tests.Configuration": "Disabled"
+        }
+    }
+}

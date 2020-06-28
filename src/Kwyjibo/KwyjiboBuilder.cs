@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Kwyjibo.Impl;
@@ -7,18 +6,18 @@ namespace Kwyjibo
 {
     public class KwyjiboBuilder
     {
-        private readonly KwyjiboOptions _options;
+        private readonly ContextTree _contextTree;
 
         public KwyjiboBuilder(KwyjiboOptions options)
         {
-            _options = options;
+            _contextTree = new ContextTree(options);
         }
 
         public ISession CreateSession(IEnumerable<IInputSource> inputSources)
-            => new Session(inputSources.ToList(), _options.Definitions);
+            => new Session(inputSources.ToList(), _contextTree);
 
         public ISession CreateSession(params object[] data)
-            => new Session(new IInputSource[] {new InputSource(data)}, _options.Definitions);
+            => new Session(new IInputSource[] {new InputSource(data)}, _contextTree);
 
         public IKwyjibo Build(string context, IEnumerable<IInputSource> inputSources)
             => new Impl.Kwyjibo(CreateSession(inputSources), context);

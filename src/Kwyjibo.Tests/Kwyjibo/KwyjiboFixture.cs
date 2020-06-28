@@ -35,7 +35,8 @@ namespace Kwyjibo.Tests.Kwyjibo
         private IKwyjibo CreateKwyjibo<TDefinitionContext, TKwyjiboContext>(string name)
         {
             var options = new KwyjiboOptions();
-            options.ForContext<TDefinitionContext>(name)
+            options.ForContext<TDefinitionContext>()
+                .Named(name)
                 .When<IIdentity>(s => s.Name.Contains("kwyjibo"))
                 .Throw<SecurityException>();
             var mock = new Mock<IIdentity>();
@@ -49,7 +50,7 @@ namespace Kwyjibo.Tests.Kwyjibo
         public void NamedKwyjiboShouldThrow()
         {
             var kwyjibo = CreateKwyjibo<KwyjiboFixture, KwyjiboFixture>("foobar");
-            Assert.Throws<SecurityException>(() => kwyjibo.Assert("foobar"));
+            Assert.Throws<SecurityException>(() => kwyjibo.For("foobar").Assert());
         }
 
         [Test]
@@ -63,7 +64,7 @@ namespace Kwyjibo.Tests.Kwyjibo
         public void KwyjiboThatDoesNotMatchOnContextShouldNotThrow()
         {
             var kwyjibo = CreateKwyjibo<KwyjiboFixture, object>("foobar");
-            Assert.DoesNotThrow(() => kwyjibo.Assert("foobar"));
+            Assert.DoesNotThrow(() => kwyjibo.For("foobar").Assert());
         }
 
         [Test]
@@ -79,6 +80,72 @@ namespace Kwyjibo.Tests.Kwyjibo
             var builder = new KwyjiboBuilder(options);
             var kwyjibo = builder.Build<KwyjiboFixture>(mock.Object);
             Assert.DoesNotThrow(() => kwyjibo.Assert());
+        }
+
+        [Test]
+        public void KwyjiboShouldThrowWithAdditionalData()
+        {
+            var options = new KwyjiboOptions();
+            options.ForContext<KwyjiboFixture>()
+                .When<IIdentity>(s => s.Name.Contains("kwyjibo"))
+                .Throw<SecurityException>();
+            var mock = new Mock<IIdentity>();
+            mock.SetupGet(i => i.Name).Returns("kwyjibo");
+
+            var builder = new KwyjiboBuilder(options);
+            var kwyjibo = builder.Build<KwyjiboFixture>();
+            Assert.Throws<SecurityException>(() => kwyjibo.Assert(mock.Object));
+        }
+
+        [Test]
+        public void DisabledKwyjiboShouldNotThrow()
+        {
+            var options = new KwyjiboOptions();
+            options.ForContext<KwyjiboFixture>()
+                .Disable()
+                .When<IIdentity>(s => s.Name.Contains("kwyjibo"))
+                .Throw<SecurityException>();
+            var mock = new Mock<IIdentity>();
+            mock.SetupGet(i => i.Name).Returns("kwyjibo");
+
+            var builder = new KwyjiboBuilder(options);
+            var kwyjibo = builder.Build<KwyjiboFixture>();
+            Assert.DoesNotThrow(() => kwyjibo.Assert(mock.Object));
+        }
+
+        [Test]
+        public void ReEnabledKwyjiboShouldThrow()
+        {
+            var options = new KwyjiboOptions();
+            options.ForContext<KwyjiboFixture>()
+                .Enable()
+                .When<IIdentity>(s => s.Name.Contains("kwyjibo"))
+                .Throw<SecurityException>();
+            options.ForContext("Kwyjibo")
+                .Disable();
+            var mock = new Mock<IIdentity>();
+            mock.SetupGet(i => i.Name).Returns("kwyjibo");
+
+            var builder = new KwyjiboBuilder(options);
+            var kwyjibo = builder.Build<KwyjiboFixture>();
+            Assert.Throws<SecurityException>(() => kwyjibo.Assert(mock.Object));
+        }
+
+        [Test]
+        public void InheritedDisabledKwyjiboShouldNotThrow()
+        {
+            var options = new KwyjiboOptions();
+            options.ForContext<KwyjiboFixture>()
+                .When<IIdentity>(s => s.Name.Contains("kwyjibo"))
+                .Throw<SecurityException>();
+            options.ForContext("Kwyjibo")
+                .Disable();
+            var mock = new Mock<IIdentity>();
+            mock.SetupGet(i => i.Name).Returns("kwyjibo");
+
+            var builder = new KwyjiboBuilder(options);
+            var kwyjibo = builder.Build<KwyjiboFixture>();
+            Assert.DoesNotThrow(() => kwyjibo.Assert(mock.Object));
         }
     }
 }
