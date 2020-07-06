@@ -12,7 +12,7 @@ projects = [
     'Kwyjibo.Extensions.DependencyInjection'
 ]
 
-version = '0.2.1'
+version = '0.3.0'
 suffix = ''
 is_release = False
 
