@@ -1,3 +1,5 @@
+using System.Threading.Tasks;
+
 namespace Kwyjibo.Impl
 {
     public class Kwyjibo : IKwyjibo
@@ -17,14 +19,24 @@ namespace Kwyjibo.Impl
             Context = session.GetContext(context);
         }
 
-        internal void AssertInternal(string handlerName, object[] data)
+        internal void HandleInternal(string handlerName, object[] data)
         {
             Context?.Handle(handlerName, Session, data);
         }
 
-        public void Assert(params object[] data)
+        internal Task HandleInternalAsync(string handlerName, object[] data)
         {
-            AssertInternal(string.Empty, data);
+            return Context?.HandleAsync(handlerName, Session, data);
+        }
+
+        public void Handle(params object[] data)
+        {
+            HandleInternal(string.Empty, data);
+        }
+
+        public Task HandleAsync(params object[] data)
+        {
+            return HandleInternalAsync(string.Empty, data);
         }
     }
 

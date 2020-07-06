@@ -11,7 +11,7 @@ namespace Kwyjibo.Tests.DependencyInjection
 
         public void Execute()
         {
-            _kwyjibo.For(nameof(Execute)).Assert();
+            _kwyjibo.For(nameof(Execute)).Handle();
         }
     }
 }

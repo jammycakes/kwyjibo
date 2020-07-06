@@ -17,6 +17,8 @@ namespace Kwyjibo.Impl
 
         public Status Status { get; private set; } = Status.Inherit;
 
+        public TimeSpan? Delay { get; private set; }
+
         public Definition(string context)
         {
             Context = context;
@@ -50,6 +52,12 @@ namespace Kwyjibo.Impl
         public IForContextClause Throw(Func<Exception> exceptionBuilder)
         {
             ExceptionBuilder = exceptionBuilder;
+            return this;
+        }
+
+        public IForContextClause Wait(TimeSpan delay)
+        {
+            Delay = delay;
             return this;
         }
     }

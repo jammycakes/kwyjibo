@@ -1,3 +1,5 @@
+using System.Threading.Tasks;
+
 namespace Kwyjibo.Impl
 {
     public class Assertion : IAssertion
@@ -11,9 +13,14 @@ namespace Kwyjibo.Impl
             _handlerName = handlerName;
         }
 
-        public void Assert(params object[] data)
+        public void Handle(params object[] data)
         {
-            _kwyjibo.AssertInternal(_handlerName, data);
+            _kwyjibo.HandleInternal(_handlerName, data);
+        }
+
+        public Task HandleAsync(params object[] data)
+        {
+            return _kwyjibo.HandleInternalAsync(_handlerName, data);
         }
     }
 }

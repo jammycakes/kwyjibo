@@ -14,7 +14,7 @@ namespace Kwyjibo.Tests.Kwyjibo
             var options = new KwyjiboOptions();
             var builder = new KwyjiboBuilder(options);
             var kwyjibo = builder.Build<KwyjiboFixture>();
-            kwyjibo.Assert();
+            kwyjibo.Handle();
         }
 
         [Test]
@@ -29,7 +29,7 @@ namespace Kwyjibo.Tests.Kwyjibo
 
             var builder = new KwyjiboBuilder(options);
             var kwyjibo = builder.Build<KwyjiboFixture>(mock.Object);
-            Assert.Throws<SecurityException>(() => kwyjibo.Assert());
+            Assert.Throws<SecurityException>(() => kwyjibo.Handle());
         }
 
         private IKwyjibo CreateKwyjibo<TDefinitionContext, TKwyjiboContext>(string name)
@@ -50,21 +50,21 @@ namespace Kwyjibo.Tests.Kwyjibo
         public void NamedKwyjiboShouldThrow()
         {
             var kwyjibo = CreateKwyjibo<KwyjiboFixture, KwyjiboFixture>("foobar");
-            Assert.Throws<SecurityException>(() => kwyjibo.For("foobar").Assert());
+            Assert.Throws<SecurityException>(() => kwyjibo.For("foobar").Handle());
         }
 
         [Test]
         public void KwyjiboThatDoesNotMatchOnNameShouldNotThrow()
         {
             var kwyjibo = CreateKwyjibo<KwyjiboFixture, KwyjiboFixture>("foobar");
-            Assert.DoesNotThrow(() => kwyjibo.Assert());
+            Assert.DoesNotThrow(() => kwyjibo.Handle());
         }
 
         [Test]
         public void KwyjiboThatDoesNotMatchOnContextShouldNotThrow()
         {
             var kwyjibo = CreateKwyjibo<KwyjiboFixture, object>("foobar");
-            Assert.DoesNotThrow(() => kwyjibo.For("foobar").Assert());
+            Assert.DoesNotThrow(() => kwyjibo.For("foobar").Handle());
         }
 
         [Test]
@@ -79,7 +79,7 @@ namespace Kwyjibo.Tests.Kwyjibo
 
             var builder = new KwyjiboBuilder(options);
             var kwyjibo = builder.Build<KwyjiboFixture>(mock.Object);
-            Assert.DoesNotThrow(() => kwyjibo.Assert());
+            Assert.DoesNotThrow(() => kwyjibo.Handle());
         }
 
         [Test]
@@ -94,7 +94,7 @@ namespace Kwyjibo.Tests.Kwyjibo
 
             var builder = new KwyjiboBuilder(options);
             var kwyjibo = builder.Build<KwyjiboFixture>();
-            Assert.Throws<SecurityException>(() => kwyjibo.Assert(mock.Object));
+            Assert.Throws<SecurityException>(() => kwyjibo.Handle(mock.Object));
         }
 
         [Test]
@@ -110,7 +110,7 @@ namespace Kwyjibo.Tests.Kwyjibo
 
             var builder = new KwyjiboBuilder(options);
             var kwyjibo = builder.Build<KwyjiboFixture>();
-            Assert.DoesNotThrow(() => kwyjibo.Assert(mock.Object));
+            Assert.DoesNotThrow(() => kwyjibo.Handle(mock.Object));
         }
 
         [Test]
@@ -128,7 +128,7 @@ namespace Kwyjibo.Tests.Kwyjibo
 
             var builder = new KwyjiboBuilder(options);
             var kwyjibo = builder.Build<KwyjiboFixture>();
-            Assert.Throws<SecurityException>(() => kwyjibo.Assert(mock.Object));
+            Assert.Throws<SecurityException>(() => kwyjibo.Handle(mock.Object));
         }
 
         [Test]
@@ -145,7 +145,7 @@ namespace Kwyjibo.Tests.Kwyjibo
 
             var builder = new KwyjiboBuilder(options);
             var kwyjibo = builder.Build<KwyjiboFixture>();
-            Assert.DoesNotThrow(() => kwyjibo.Assert(mock.Object));
+            Assert.DoesNotThrow(() => kwyjibo.Handle(mock.Object));
         }
     }
 }

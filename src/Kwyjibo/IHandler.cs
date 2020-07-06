@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Kwyjibo
 {
@@ -16,5 +17,7 @@ namespace Kwyjibo
         Func<Exception> ExceptionBuilder { get; }
 
         void Handle(IEnumerable<IInputSource> sources);
+
+        Task HandleAsync(IEnumerable<IInputSource> sources);
     }
 }

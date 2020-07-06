@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Kwyjibo
 {
@@ -17,5 +17,7 @@ namespace Kwyjibo
         IHandler GetHandler(string handlerName);
 
         void Handle(string handlerName, ISession session, object[] data);
+
+        Task HandleAsync(string handlerName, ISession session, object[] data);
     }
 }

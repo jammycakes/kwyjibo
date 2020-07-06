@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Kwyjibo.Impl
 {
@@ -52,10 +53,31 @@ namespace Kwyjibo.Impl
             }
 
             if (data != null && data.Any()) {
-                handler.Handle(new[] {new InputSource(data)});
+                handler.Handle(new[] {new InputSource(data)}.Concat(session.GetSources()));
+            }
+            else {
+                handler.Handle(session.GetSources());
+            }
+        }
+
+        public async Task HandleAsync(string handlerName, ISession session, object[] data)
+        {
+            if (!Enabled) {
+                return;
             }
 
-            handler.Handle(session.GetSources());
+            var handler = GetHandler(handlerName);
+            if (handler == null) {
+                return;
+            }
+
+            if (data != null && data.Any()) {
+                await handler.HandleAsync(new[] {new InputSource(data)}.Concat(session.GetSources()))
+                    .ConfigureAwait(false);
+            }
+            else {
+                await handler.HandleAsync(session.GetSources()).ConfigureAwait(false);
+            }
         }
 
         public Context(IContext parent, string fullName, string name)

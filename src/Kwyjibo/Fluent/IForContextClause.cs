@@ -12,6 +12,8 @@ namespace Kwyjibo.Fluent
 
         IForContextClause Throw(Func<Exception> exceptionBuilder);
 
+        IForContextClause Wait(TimeSpan delay);
+
         IForContextClause When<TService>(Predicate<TService> predicate);
 
     }
