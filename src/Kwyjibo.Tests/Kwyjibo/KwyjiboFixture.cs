@@ -1,5 +1,9 @@
+using System;
+using System.Diagnostics;
 using System.Security;
 using System.Security.Principal;
+using System.Threading.Tasks;
+using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 
@@ -146,6 +150,46 @@ namespace Kwyjibo.Tests.Kwyjibo
             var builder = new KwyjiboBuilder(options);
             var kwyjibo = builder.Build<KwyjiboFixture>();
             Assert.DoesNotThrow(() => kwyjibo.Handle(mock.Object));
+        }
+
+        [Test]
+        public async Task DelayKwyjiboShouldDelay()
+        {
+            var options = new KwyjiboOptions();
+            options.ForContext<KwyjiboFixture>()
+                .When<IIdentity>(s => s.Name.Contains("kwyjibo"))
+                .Wait(TimeSpan.FromSeconds(1));
+            var mock = new Mock<IIdentity>();
+            mock.SetupGet(i => i.Name).Returns("kwyjibo");
+
+            var builder = new KwyjiboBuilder(options);
+            var kwyjibo = builder.Build<KwyjiboFixture>();
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+            await kwyjibo.HandleAsync(mock.Object);
+            stopwatch.Stop();
+            stopwatch.ElapsedMilliseconds.Should().BeGreaterThan(1000);
+        }
+
+
+        [Test]
+        public async Task DisabledDelayKwyjiboShouldNotDelay()
+        {
+            var options = new KwyjiboOptions();
+            options.ForContext<KwyjiboFixture>()
+                .When<IIdentity>(s => s.Name.Contains("kwyjibo"))
+                .Wait(TimeSpan.FromSeconds(10))
+                .Disable();
+            var mock = new Mock<IIdentity>();
+            mock.SetupGet(i => i.Name).Returns("kwyjibo");
+
+            var builder = new KwyjiboBuilder(options);
+            var kwyjibo = builder.Build<KwyjiboFixture>();
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+            await kwyjibo.HandleAsync(mock.Object);
+            stopwatch.Stop();
+            stopwatch.ElapsedMilliseconds.Should().BeLessThan(1000);
         }
     }
 }
