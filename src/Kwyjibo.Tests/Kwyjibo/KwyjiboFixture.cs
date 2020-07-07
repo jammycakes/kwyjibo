@@ -158,7 +158,7 @@ namespace Kwyjibo.Tests.Kwyjibo
             var options = new KwyjiboOptions();
             options.ForContext<KwyjiboFixture>()
                 .When<IIdentity>(s => s.Name.Contains("kwyjibo"))
-                .Wait(TimeSpan.FromSeconds(1));
+                .Wait(TimeSpan.FromSeconds(1.5));
             var mock = new Mock<IIdentity>();
             mock.SetupGet(i => i.Name).Returns("kwyjibo");
 
@@ -178,7 +178,7 @@ namespace Kwyjibo.Tests.Kwyjibo
             var options = new KwyjiboOptions();
             options.ForContext<KwyjiboFixture>()
                 .When<IIdentity>(s => s.Name.Contains("kwyjibo"))
-                .Wait(TimeSpan.FromSeconds(10))
+                .Wait(TimeSpan.FromSeconds(1.5))
                 .Disable();
             var mock = new Mock<IIdentity>();
             mock.SetupGet(i => i.Name).Returns("kwyjibo");
