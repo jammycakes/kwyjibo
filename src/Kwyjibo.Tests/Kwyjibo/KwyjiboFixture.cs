@@ -1,9 +1,5 @@
-using System;
-using System.Diagnostics;
 using System.Security;
 using System.Security.Principal;
-using System.Threading.Tasks;
-using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 
@@ -13,183 +9,88 @@ namespace Kwyjibo.Tests.Kwyjibo
     public class KwyjiboFixture
     {
         [Test]
-        public void EmptyKwyjiboShouldDoNothing()
+        public void KwyjiboWithNoDataShouldNotThrow()
         {
             var options = new KwyjiboOptions();
             var builder = new KwyjiboBuilder(options);
             var kwyjibo = builder.Build<KwyjiboFixture>();
-            kwyjibo.Handle();
+            kwyjibo.When<IIdentity>().Matches(id => id.Name.Contains("kwyjibo"))
+                .Throw<SecurityException>();
         }
 
         [Test]
-        public void ActiveKwyjiboShouldThrow()
+        public void KwyjiboWithMatchingDataShouldThrow()
         {
             var options = new KwyjiboOptions();
-            options.ForContext<KwyjiboFixture>()
-                .When<IIdentity>(s => s.Name.Contains("kwyjibo"))
-                .Throw<SecurityException>();
+            var builder = new KwyjiboBuilder(options);
+            var kwyjibo = builder.Build<KwyjiboFixture>();
+
             var mock = new Mock<IIdentity>();
             mock.SetupGet(i => i.Name).Returns("kwyjibo");
 
+            Assert.Throws<SecurityException>(() => {
+                kwyjibo.When(mock.Object).Matches(id => id.Name.Contains("kwyjibo"))
+                    .Throw<SecurityException>();
+            });
+        }
+
+        [Test]
+        public void KwyjiboWithMatchingDataInSessionShouldThrow()
+        {
+            var options = new KwyjiboOptions();
             var builder = new KwyjiboBuilder(options);
+
+            var mock = new Mock<IIdentity>();
+            mock.SetupGet(i => i.Name).Returns("kwyjibo");
+
             var kwyjibo = builder.Build<KwyjiboFixture>(mock.Object);
-            Assert.Throws<SecurityException>(() => kwyjibo.Handle());
+
+            Assert.Throws<SecurityException>(() => {
+                kwyjibo.When<IIdentity>().Matches(id => id.Name.Contains("kwyjibo"))
+                    .Throw<SecurityException>();
+            });
         }
 
-        private IKwyjibo CreateKwyjibo<TDefinitionContext, TKwyjiboContext>(string name)
+        [Test]
+        public void KwyjiboWithNonMatchingDataButNonSpecifiedMatchingSessionShouldNotThrow()
         {
             var options = new KwyjiboOptions();
-            options.ForContext<TDefinitionContext>()
-                .Named(name)
-                .When<IIdentity>(s => s.Name.Contains("kwyjibo"))
-                .Throw<SecurityException>();
-            var mock = new Mock<IIdentity>();
-            mock.SetupGet(i => i.Name).Returns("kwyjibo");
-
             var builder = new KwyjiboBuilder(options);
-            return builder.Build<TKwyjiboContext>(mock.Object);
+
+            var mock = new Mock<IIdentity>();
+            mock.SetupGet(i => i.Name).Returns("bart");
+
+            var mockForSession = new Mock<IIdentity>();
+            mockForSession.SetupGet(i => i.Name).Returns("kwyjibo");
+
+            var kwyjibo = builder.Build<KwyjiboFixture>(mockForSession.Object);
+
+            Assert.DoesNotThrow(() => {
+                kwyjibo.When<IIdentity>(mock.Object).Matches(id => id.Name.Contains("kwyjibo"))
+                    .Throw<SecurityException>();
+            });
         }
 
         [Test]
-        public void NamedKwyjiboShouldThrow()
-        {
-            var kwyjibo = CreateKwyjibo<KwyjiboFixture, KwyjiboFixture>("foobar");
-            Assert.Throws<SecurityException>(() => kwyjibo.For("foobar").Handle());
-        }
-
-        [Test]
-        public void KwyjiboThatDoesNotMatchOnNameShouldNotThrow()
-        {
-            var kwyjibo = CreateKwyjibo<KwyjiboFixture, KwyjiboFixture>("foobar");
-            Assert.DoesNotThrow(() => kwyjibo.Handle());
-        }
-
-        [Test]
-        public void KwyjiboThatDoesNotMatchOnContextShouldNotThrow()
-        {
-            var kwyjibo = CreateKwyjibo<KwyjiboFixture, object>("foobar");
-            Assert.DoesNotThrow(() => kwyjibo.For("foobar").Handle());
-        }
-
-        [Test]
-        public void KwyjiboThatDoesNotSatisfyPredicateShouldNotThrow()
+        public void KwyjiboWithNonMatchingDataButSpecifiedMatchingSessionShouldNotThrow()
         {
             var options = new KwyjiboOptions();
-            options.ForContext<KwyjiboFixture>()
-                .When<IIdentity>(s => false)
-                .Throw<SecurityException>();
-            var mock = new Mock<IIdentity>();
-            mock.SetupGet(i => i.Name).Returns("kwyjibo");
-
             var builder = new KwyjiboBuilder(options);
-            var kwyjibo = builder.Build<KwyjiboFixture>(mock.Object);
-            Assert.DoesNotThrow(() => kwyjibo.Handle());
-        }
 
-        [Test]
-        public void KwyjiboShouldThrowWithAdditionalData()
-        {
-            var options = new KwyjiboOptions();
-            options.ForContext<KwyjiboFixture>()
-                .When<IIdentity>(s => s.Name.Contains("kwyjibo"))
-                .Throw<SecurityException>();
             var mock = new Mock<IIdentity>();
-            mock.SetupGet(i => i.Name).Returns("kwyjibo");
+            mock.SetupGet(i => i.Name).Returns("bart");
 
-            var builder = new KwyjiboBuilder(options);
-            var kwyjibo = builder.Build<KwyjiboFixture>();
-            Assert.Throws<SecurityException>(() => kwyjibo.Handle(mock.Object));
-        }
+            var mockForSession = new Mock<IIdentity>();
+            mockForSession.SetupGet(i => i.Name).Returns("kwyjibo");
 
-        [Test]
-        public void DisabledKwyjiboShouldNotThrow()
-        {
-            var options = new KwyjiboOptions();
-            options.ForContext<KwyjiboFixture>()
-                .Disable()
-                .When<IIdentity>(s => s.Name.Contains("kwyjibo"))
-                .Throw<SecurityException>();
-            var mock = new Mock<IIdentity>();
-            mock.SetupGet(i => i.Name).Returns("kwyjibo");
+            var kwyjibo = builder.Build<KwyjiboFixture>(mockForSession.Object);
 
-            var builder = new KwyjiboBuilder(options);
-            var kwyjibo = builder.Build<KwyjiboFixture>();
-            Assert.DoesNotThrow(() => kwyjibo.Handle(mock.Object));
-        }
-
-        [Test]
-        public void ReEnabledKwyjiboShouldThrow()
-        {
-            var options = new KwyjiboOptions();
-            options.ForContext<KwyjiboFixture>()
-                .Enable()
-                .When<IIdentity>(s => s.Name.Contains("kwyjibo"))
-                .Throw<SecurityException>();
-            options.ForContext("Kwyjibo")
-                .Disable();
-            var mock = new Mock<IIdentity>();
-            mock.SetupGet(i => i.Name).Returns("kwyjibo");
-
-            var builder = new KwyjiboBuilder(options);
-            var kwyjibo = builder.Build<KwyjiboFixture>();
-            Assert.Throws<SecurityException>(() => kwyjibo.Handle(mock.Object));
-        }
-
-        [Test]
-        public void InheritedDisabledKwyjiboShouldNotThrow()
-        {
-            var options = new KwyjiboOptions();
-            options.ForContext<KwyjiboFixture>()
-                .When<IIdentity>(s => s.Name.Contains("kwyjibo"))
-                .Throw<SecurityException>();
-            options.ForContext("Kwyjibo")
-                .Disable();
-            var mock = new Mock<IIdentity>();
-            mock.SetupGet(i => i.Name).Returns("kwyjibo");
-
-            var builder = new KwyjiboBuilder(options);
-            var kwyjibo = builder.Build<KwyjiboFixture>();
-            Assert.DoesNotThrow(() => kwyjibo.Handle(mock.Object));
-        }
-
-        [Test]
-        public async Task DelayKwyjiboShouldDelay()
-        {
-            var options = new KwyjiboOptions();
-            options.ForContext<KwyjiboFixture>()
-                .When<IIdentity>(s => s.Name.Contains("kwyjibo"))
-                .Wait(TimeSpan.FromSeconds(1.5));
-            var mock = new Mock<IIdentity>();
-            mock.SetupGet(i => i.Name).Returns("kwyjibo");
-
-            var builder = new KwyjiboBuilder(options);
-            var kwyjibo = builder.Build<KwyjiboFixture>();
-            var stopwatch = new Stopwatch();
-            stopwatch.Start();
-            await kwyjibo.HandleAsync(mock.Object);
-            stopwatch.Stop();
-            stopwatch.ElapsedMilliseconds.Should().BeGreaterThan(1000);
-        }
-
-
-        [Test]
-        public async Task DisabledDelayKwyjiboShouldNotDelay()
-        {
-            var options = new KwyjiboOptions();
-            options.ForContext<KwyjiboFixture>()
-                .When<IIdentity>(s => s.Name.Contains("kwyjibo"))
-                .Wait(TimeSpan.FromSeconds(1.5))
-                .Disable();
-            var mock = new Mock<IIdentity>();
-            mock.SetupGet(i => i.Name).Returns("kwyjibo");
-
-            var builder = new KwyjiboBuilder(options);
-            var kwyjibo = builder.Build<KwyjiboFixture>();
-            var stopwatch = new Stopwatch();
-            stopwatch.Start();
-            await kwyjibo.HandleAsync(mock.Object);
-            stopwatch.Stop();
-            stopwatch.ElapsedMilliseconds.Should().BeLessThan(1000);
+            Assert.Throws<SecurityException>(() => {
+                kwyjibo.When(mock.Object)
+                    .OrSession()
+                    .Matches(id => id.Name.Contains("kwyjibo"))
+                    .Throw<SecurityException>();
+            });
         }
     }
 }

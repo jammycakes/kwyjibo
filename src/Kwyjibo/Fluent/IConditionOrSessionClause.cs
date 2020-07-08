@@ -7,6 +7,6 @@ namespace Kwyjibo.Fluent
         ///  the data that has been passed in directly.
         /// </summary>
         /// <returns></returns>
-        IActionClause<TData> OrSession();
+        IConditionClause<TData> OrSession();
     }
 }

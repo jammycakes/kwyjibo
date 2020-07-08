@@ -2,6 +2,7 @@ using System;
 using System.Security.Principal;
 using FluentAssertions;
 using Kwyjibo.Impl;
+using Kwyjibo.Tests.Kwyjibo.Version02;
 using Moq;
 using NUnit.Framework;
 

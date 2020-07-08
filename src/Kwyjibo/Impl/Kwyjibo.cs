@@ -8,12 +8,12 @@ namespace Kwyjibo.Impl
     {
         public IConditionClause<TData> When<TData>()
         {
-            throw new System.NotImplementedException();
+            return new Assertion<TData>(this);
         }
 
         public IConditionOrSessionClause<TData> When<TData>(TData item)
         {
-            throw new System.NotImplementedException();
+            return new Assertion<TData>(this, item);
         }
 
         public ISession Session { get; }
