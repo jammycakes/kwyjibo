@@ -1,9 +1,21 @@
 using System.Threading.Tasks;
+using Kwyjibo.Fluent;
+using Kwyjibo.Impl.Version02;
 
 namespace Kwyjibo.Impl
 {
     public class Kwyjibo : IKwyjibo
     {
+        public IConditionClause<TData> When<TData>()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public IConditionOrSessionClause<TData> When<TData>(TData item)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public ISession Session { get; }
 
         public IContext Context { get; }

@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 
-namespace Kwyjibo.Impl
+namespace Kwyjibo.Impl.Version02
 {
     public class Assertion : IAssertion
     {
